@@ -1,34 +1,22 @@
 <script lang="ts" setup>
-import { ref, onMounted, watch } from "vue"
-import { useLocaleStore } from "@/store/modules/locale"
+import { ref, onMounted } from "vue"
 import { LocaleSwitch } from "@/components/LocaleSwitch"
 import { ThemeSwitch } from "@/components/ThemeSwitch"
 import type { TabsPaneContext } from "element-plus"
 import LoginForm from "./components/LoginForm.vue"
-import { reload } from "@/utils"
 import { Qrcode } from "@/components/Qrcode"
+import { useI18n } from "@/hooks/useI18n"
 
 const activeName = ref("login")
+const { t } = useI18n()
 
 const handleClick = (tab: TabsPaneContext) => {
   console.log("tab切换监听：", tab.index)
 }
 
-const locale = useLocaleStore()
 const vxTitle = import.meta.env.VITE_APP_TITLE
 const isAnimate = ref(false)
 const logoUrl = new URL("@/assets/imgs/VxLogo.png", import.meta.url).href
-
-watch(
-  () => locale.getCurrentLocale,
-  val => {
-    console.log(val)
-    reload()
-  },
-  {
-    deep: true
-  }
-)
 
 onMounted(() => {
   isAnimate.value = true
@@ -54,11 +42,11 @@ onMounted(() => {
             <img :src="logoUrl" />
             <span>{{ vxTitle }}</span>
           </div>
-          <div class="loginBox__desp">一款基于Typescript + vue3 + vite + vueuse的后台管理系统框架</div>
+          <div class="loginBox__desp">{{ t("login.tips") }}</div>
           <div class="loginBox__container">
             <ElTabs class="loginBox__tabs" v-model="activeName" @tab-click="handleClick">
-              <ElTabPane label="登录" name="login"><LoginForm /></ElTabPane>
-              <ElTabPane label="二维码登录" name="qr-login">
+              <ElTabPane :label="t('login.login')" name="login"><LoginForm /></ElTabPane>
+              <ElTabPane :label="t('login.tabQrLogin')" name="qr-login">
                 <div class="qrcode-login">
                   <Qrcode value="http://hytql8.top" />
                 </div>

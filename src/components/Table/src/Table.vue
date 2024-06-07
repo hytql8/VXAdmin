@@ -469,6 +469,7 @@ export default defineComponent({
                 onRefresh={refresh}
                 onChangeFullScreen={changeFullScreen}
                 slot={tableSettingSlot()}
+                data={unref(props.columns)}
               />
             ) : (
               void 0

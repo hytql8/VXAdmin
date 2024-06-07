@@ -1,17 +1,23 @@
 <script lang="tsx">
-import { ElDropdown, ElDropdownItem, ElDropdownMenu } from "element-plus"
+import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElPopover, ElCheckbox, ElTree, ElScrollbar, ElTooltip } from "element-plus"
 import type { ComponentSize } from "element-plus"
-import { computed, defineComponent, unref, ref, VNode } from "vue"
+import { computed, defineComponent, unref, ref, nextTick, type VNode } from "vue"
 import type { PropType } from "vue"
 import { VxIcon } from "@/components/VxIcon"
 import { useAppStore } from "@/store/modules/app"
 import { useI18n } from "vue-i18n"
+import type { TableColumnParameterTypes } from "@/components/Table/src/types"
+import { filterBySetting } from "../helper"
 
 export default defineComponent({
   name: "TableSetting",
   props: {
     slot: {
       type: Object as PropType<VNode>
+    },
+    data: {
+      type: Array as PropType<TableColumnParameterTypes[]>,
+      default: () => []
     }
   },
   emits: ["changeSize", "refresh", "changeFullScreen"],
@@ -20,7 +26,6 @@ export default defineComponent({
     const appStore = useAppStore()
     const columnSize = computed(() => appStore.getColumnSize)
     const { t } = useI18n()
-
     const changeSize = (size: ComponentSize) => {
       emit("changeSize", size)
     }
@@ -34,6 +39,20 @@ export default defineComponent({
     const changeFullScreen = () => {
       isFullSrceen.value = !unref(isFullSrceen)
       emit("changeFullScreen", unref(isFullSrceen))
+    }
+
+    console.log(props.data)
+    // 构造table的表头结构树
+    const data = computed(() => filterBySetting(props.data))
+
+    const prevClick = (node: TableColumnParameterTypes) => (e: Event) => {
+      e.preventDefault()
+      console.log(node, e)
+    }
+
+    const nextClick = (e: Event) => {
+      e.preventDefault()
+      console.log(1)
     }
 
     return () => (
@@ -63,12 +82,70 @@ export default defineComponent({
               }
             }}
           </ElDropdown>
-          {/* <ElPopover placement="bottom" title="Title" width={200} trigger="click">
+          <ElPopover placement="bottom" width={400} trigger="click">
             {{
               default: () => {
                 return (
                   <>
-                    <div>设置</div>
+                    <div class="column-selection">
+                      <div class="column-selection__header">
+                        <div class="header-total">
+                          <ElCheckbox></ElCheckbox> <span class="header-total-sum">列展示</span>
+                        </div>
+                        <div>还原</div>
+                      </div>
+                      <ElScrollbar style="max-height: 300px;padding: 0 10px 0 0">
+                        <ElTree
+                          check-strictly
+                          expand-on-click-node={false}
+                          default-expand-all
+                          draggable
+                          show-checkbox
+                          data={unref(data)}
+                          props={{
+                            label: "label",
+                            children: "children"
+                          }}
+                        >
+                          {{
+                            default: ({ node }) => {
+                              return (
+                                <div class="treenode-group">
+                                  <span>{node.label}</span>
+                                  <div class="icon-group">
+                                    <ElTooltip effect="dark" content="固定在左侧" placement="top-start">
+                                      {{
+                                        default: () => (
+                                          <VxIcon
+                                            onClick={prevClick(node)}
+                                            class="icon-left"
+                                            icon="line-md:arrow-close-left"
+                                            color="#8D9095"
+                                            size={16}
+                                          />
+                                        )
+                                      }}
+                                    </ElTooltip>
+                                    <ElTooltip effect="dark" content="固定在右侧" placement="top-start">
+                                      {{
+                                        default: () => (
+                                          <VxIcon
+                                            onClick={nextClick}
+                                            icon="line-md:arrow-close-right"
+                                            color="#8D9095"
+                                            size={16}
+                                          />
+                                        )
+                                      }}
+                                    </ElTooltip>
+                                  </div>
+                                </div>
+                              )
+                            }
+                          }}
+                        </ElTree>
+                      </ElScrollbar>
+                    </div>
                   </>
                 )
               },
@@ -85,7 +162,7 @@ export default defineComponent({
                 )
               }
             }}
-          </ElPopover> */}
+          </ElPopover>
 
           <VxIcon
             class="vx-icon"

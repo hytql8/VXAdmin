@@ -110,17 +110,17 @@ html.dark {
   --vxe-table-cell-copy-area-border-color: #409eff;
   --vxe-table-cell-extend-area-border-color: #409eff;
   --vxe-table-cell-active-area-border-color: #409eff;
-  --vxe-table-cell-area-background-color: rgb(64 158 255 / 20%);
+  --vxe-table-cell-area-background-color: rgb(64 158 255 / 0.2);
   --vxe-table-checkbox-range-border-width: 1px;
   --vxe-table-checkbox-range-border-color: #006af1;
-  --vxe-table-checkbox-range-background-color: rgb(50 128 252 / 20%);
-  --vxe-table-fixed-left-scrolling-box-shadow: 8px 0px 10px -5px rgb(0 0 0 / 12%);
-  --vxe-table-fixed-right-scrolling-box-shadow: -8px 0px 10px -5px rgb(0 0 0 / 12%);
+  --vxe-table-checkbox-range-background-color: rgb(50 128 252 / 0.2);
+  --vxe-table-fixed-left-scrolling-box-shadow: 8px 0px 10px -5px rgb(0 0 0 / 0.12);
+  --vxe-table-fixed-right-scrolling-box-shadow: -8px 0px 10px -5px rgb(0 0 0 / 0.12);
   --vxe-table-filter-panel-background-color: #2c3e50;
   --vxe-table-menu-item-width: 178px;
   --vxe-table-menu-background-color: #2c3e50;
   --vxe-loading-color: #1abc9c;
-  --vxe-loading-background-color: hsl(0deg 0% 100% / 50%);
+  --vxe-loading-background-color: hsl(0deg 0% 100% / 0.5);
   --vxe-loading-z-index: 999;
   --vxe-table-validate-error-color: #f56c6c;
   --vxe-table-validate-error-background-color: #2c3e50;
@@ -226,26 +226,7 @@ html.dark {
   --vxe-switch-font-color: #ffffff;
   --vxe-switch-icon-background-color: #2c3e50;
   --vxe-switch-open-background-color: #1abc9c;
-  --vxe-switch-close-background-color: rgb(0 0 0 / 35%);
-  --vxe-switch-disabled-background-color: rgb(0 0 0 / 15%);
+  --vxe-switch-close-background-color: rgb(0 0 0 / 0.35);
+  --vxe-switch-disabled-background-color: rgb(0 0 0 / 0.15);
   --vxe-pulldown-panel-background-color: #34495e;
-}
-
-@mixin flex($justify: space-between, $align: center, $wrap: nowrap) {
-  display: flex;
-  flex-wrap: $wrap;
-  align-items: $align;
-  justify-content: $justify !important;
-}
-
-@mixin border($color) {
-  border: 1px solid $color;
-}
-
-@mixin cursor($pointer: pointer) {
-  cursor: $pointer;
-}
-
-@mixin transition($attr: color) {
-  transition: $attr 0.3s;
 }
